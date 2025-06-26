@@ -43,7 +43,7 @@ variable "autoscaling" {
   })
 }
 variable "database" {
-  description = "RDS instance settings for staging and production"
+  description = "RDS instance settings"
   type = object({
     engine                  = string
     instance_class          = string

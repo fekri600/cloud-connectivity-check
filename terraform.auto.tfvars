@@ -2,8 +2,9 @@
 # Project Configuration
 # ======================
 project_settings = {
-  project    = "i360moms"
+  project    = "i2506connect"
   aws_region = "us-east-1"
+  name_prefix = "fs" 
 }
 
 
@@ -195,107 +196,8 @@ redis = {
 }
 
 
-# ====================
-# Alarm Configuration
-# ====================
-alarm = {
-  namespace = {
-    ec2   = "AWS/EC2"
-    rds   = "AWS/RDS"
-    redis = "AWS/ElastiCache"
-    logs  = "LogMetrics"
-  }
-
-  metric = {
-    cpu        = "CPUUtilization"
-    memory     = "FreeableMemory"
-    conn       = "DatabaseConnections"
-    redis_conn = "CurrConnections"
-
-    # log‑derived metrics
-    nginx_5xx = "Nginx5xxErrorCount"
-    rds_error = "RDSErrorCount"
-    redis_err = "RedisErrorCount"
-    app_error = "ApplicationErrorCount"
-  }
-
-  threshold = {
-    cpu        = 80        # percent
-    memory     = 200000000 # bytes
-    conn       = 100       # number of connections
-    redis_conn = 100       # number of connections
-
-    # all log metrics trip at 1
-    nginx_5xx = 1 # count
-    rds_error = 1 # count
-    redis_err = 1 # count
-    app_error = 1 # count
-  }
-
-  dim = {
-    ec2   = "AutoScalingGroupName"
-    rds   = "DBInstanceIdentifier"
-    redis = "CacheClusterId"
-  }
-
-  attr = {
-    ec2   = "asg_name"
-    rds   = "rds_id"
-    redis = "redis_id"
-  }
-
-  common_settings = {
-    comparison_operator = "GreaterThanThreshold"
-    evaluation_periods  = 1   # number of periods
-    period              = 300 # seconds
-    statistic           = "Sum"
-  }
-
-  alert_email = "alerts@example.com"
-}
-
-
 logs = {
   retention_in_days = 7 # days
-
-  log_group_prefix = {
-    staging    = "staging"
-    production = "production"
-  }
-
-  group_paths = {
-    application      = "/aws/ec2/application"
-    nginx            = "/aws/ec2/nginx"
-    system           = "/aws/ec2/system"
-    rds              = "/aws/rds/mysql-logs"
-    redis            = "/aws/elasticache/redis-logs"
-    ssm_connectivity = "/aws/ssm/connectivity"
-
-  }
-
-  filters = {
-    pattern = {
-      error  = "ERROR"
-      status = "[status=5*]"
-    }
-
-    transformation = {
-      name = {
-        app   = "ApplicationErrorCount"
-        nginx = "Nginx5xxErrorCount"
-        rds   = "RDSErrorCount"
-        redis = "RedisErrorCount"
-      }
-      namespace = "LogMetrics"
-      value     = "1" # constant value for log transformation
-    }
-  }
+  group_path = "/aws/ssm/connectivity"
 }
 
-# ====================
-# Dashboard Configuration
-# ====================
-dashboard_config = {
-  create_combined_dashboard  = false
-  create_separate_dashboards = true
-}

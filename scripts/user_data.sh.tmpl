@@ -21,7 +21,6 @@ sudo yum install -y mysql-community-client --nogpgcheck || echo "❌ Failed to i
 
 # Other tools
 amazon-linux-extras install -y nginx1
-yum install -y docker || echo "⚠️ Failed to install Docker" >> /var/log/application.log
 yum install -y amazon-cloudwatch-agent || echo "⚠️ Failed to install CloudWatch Agent" >> /var/log/application.log
 yum install -y awscli curl || echo "⚠️ Failed to install awscli/curl" >> /var/log/application.log
 yum install -y nmap-ncat || echo "⚠️ Failed to install Netcat" >> /var/log/application.log
@@ -33,18 +32,15 @@ LOG_FILE="/var/log/application.log"
 mkdir -p $(dirname $LOG_FILE)
 touch $LOG_FILE
 chmod 644 $LOG_FILE
-echo "Application started on $(date)" >> $LOG_FILE
 
 ssm_logs="/tmp/connectivity_test.log"
 mkdir -p $(dirname $ssm_logs)
 touch $ssm_logs
 chmod 644 $ssm_logs
-echo "ssm connectivity test started on $(date)" >> $ssm_logs
 
 # ==========
 # RDS IAM Auth Test
 # ==========
-echo "Testing RDS IAM Authentication..." >> $LOG_FILE
 
 token=$(aws rds generate-db-auth-token \
   --hostname "$db_host" \
@@ -53,13 +49,13 @@ token=$(aws rds generate-db-auth-token \
   --username "$db_user")
 
 if [ -z "$token" ]; then
-  echo "❌ Failed to generate RDS IAM token" >> $LOG_FILE
+  echo "❌ Failed to generate RDS IAM token" 
 else
   mysql -h "$db_host" \
     -u "$db_user" \
     --password="$token" \
     --enable-cleartext-plugin \
-    -e "SELECT NOW();" >> $LOG_FILE 2>&1 || echo "❌ IAM RDS auth failed" >> $LOG_FILE
+    -e "SELECT NOW();" >> $LOG_FILE 2>&1 || echo "❌ IAM RDS auth failed" 
 fi
 
 # ==========
@@ -99,11 +95,6 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<EOF
             "file_path": "/var/log/connectivity_test.log",
             "log_group_name": "/aws/ssm/connectivity-${log_group_prefix}",
             "log_stream_name": "{instance_id}-ssm"
-          },
-          {
-            "file_path": "/var/log/cloud-init-output.log",
-            "log_group_name": "/aws/ec2/system-${log_group_prefix}",
-            "log_stream_name": "{instance_id}-cloud-init"
           }
         ]
       }

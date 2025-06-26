@@ -6,6 +6,7 @@ variable "project_settings" {
   type = object({
     project    = string
     aws_region = string
+    name_prefix = string
   })
 }
 
@@ -194,55 +195,16 @@ variable "redis" {
   })
 }
 
-variable "alarm" {
-  description = "CloudWatch alarm configuration"
-  type = object({
-    namespace = map(string)
-    metric    = map(string)
-    threshold = map(number)
-    dim       = map(string)
-    attr      = map(string)
-    common_settings = object({
-      comparison_operator = string
-      evaluation_periods  = number
-      period              = number
-      statistic           = string
-    })
-    alert_email = string
-  })
-}
+
 
 variable "logs" {
   description = "CloudWatch log configuration for all services"
   type = object({
     retention_in_days = number
-    log_group_prefix  = map(string)
-    group_paths       = map(string)
-    filters = object({
-      pattern = object({
-        error  = string
-        status = string
-      })
-      transformation = object({
-        name      = map(string)
-        namespace = string
-        value     = string
-      })
-    })
+    group_path       = string
   })
 }
 
-variable "dashboard_config" {
-  description = "Configuration for CloudWatch dashboards"
-  type = object({
-    create_combined_dashboard  = bool
-    create_separate_dashboards = bool
-  })
-  default = {
-    create_combined_dashboard  = true
-    create_separate_dashboards = false
-  }
-}
 
 
 
