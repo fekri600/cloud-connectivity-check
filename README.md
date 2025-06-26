@@ -1,22 +1,22 @@
 # Cloud Connectivity Check (Terraform + AWS)
 
-This repository provides a Terraform-based solution for verifying **network and service connectivity** between cloud components in AWS. It includes modular Terraform code and helper scripts to provision infrastructure, perform connectivity diagnostics, and collect test logs via AWS Systems Manager (SSM).
+This repository provides a Terraform-based solution for verifying network and service connectivity between cloud components in AWS. It includes modular Terraform code and helper scripts to provision infrastructure, perform connectivity diagnostics, and collect test logs—fully automated using AWS Systems Manager (SSM) documents.
 
 ---
 
-## 🧪 Purpose
+## Purpose
 
 The **Cloud Connectivity Check** helps validate the following:
 
-- ✅ EC2 instance reachability to **RDS (MySQL)** on port `3306`
-- ✅ EC2 connectivity to **Redis** on port `6379`
-- ✅ Proper functioning of **IAM-based RDS authentication**
-- ✅ EC2 instance **internet access**
-- ✅ Collection of test results via **SSM and CloudWatch Logs**
+-  EC2 instance reachability to **RDS (MySQL)** on port `3306`
+-  EC2 connectivity to **Redis** on port `6379`
+-  Proper functioning of **IAM-based RDS authentication**
+-  EC2 instance **internet access**
+-  Collection of test results via **SSM and CloudWatch Logs**
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```
 cloud-connectivity-check/
@@ -45,7 +45,7 @@ cloud-connectivity-check/
 
 ---
 
-## 🚀 How It Works
+##  How It Works
 
 1. **Provision Infrastructure**
    - Deploys a test environment with VPC, EC2, RDS, Redis, IAM roles, and CloudWatch setup.
@@ -96,30 +96,44 @@ Testing internet access...
 
 ---
 
-## 🛠️ Usage
 
-### 1. Initialize & Deploy
+## Usage
 
-```bash
-make init
-make apply
-```
-
-### 2. Fetch Logs
+### 1. Apply Infrastructure & Run Connectivity Test
 
 ```bash
-make fetch-logs
+make apply-and-test
 ```
 
-### 3. Destroy Resources
+This command will:
 
-```bash
-make destroy
-```
+* Initialize and apply the Terraform configuration
+* Wait for test logs to be published
+* Automatically fetch logs from CloudWatch for the test EC2 instance
+* Save them to `outputs/connectivity_test_staging.txt`
 
 ---
 
-## 👨‍💻 Maintainer
+### 2. Destroy the Environment
+
+```bash
+make delete
+```
+
+This will:
+
+* Tear down all provisioned resources using `terraform destroy -auto-approve`
+* Confirm when the environment has been fully deleted
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+##  Maintainer
 
 **Fekri Saleh**  
 Cloud Architect & DevOps Engineer  
