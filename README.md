@@ -137,4 +137,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 **Fekri Saleh**  
 Cloud Architect & DevOps Engineer  
-*Email: fekri.saleh@ucalgary.ca*
