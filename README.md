@@ -64,7 +64,7 @@ cloud-connectivity-check/
 
 ---
 
-## 📄 Sample Output
+## Sample Output
 
 ```bash
 -------------------2025-06-26 02:38:59-----------------------
