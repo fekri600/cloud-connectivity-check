@@ -15,6 +15,8 @@ The **Cloud Connectivity Check** helps validate the following:
 -  Collection of test results via **SSM and CloudWatch Logs**
 
 ---
+![diagram](check-connectivity-diagram.png)
+---
 
 ##  Repository Structure
 
