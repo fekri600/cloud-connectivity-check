@@ -18,6 +18,30 @@ The **Cloud Connectivity Check** helps validate the following:
 ![diagram](connectivity-check-diagram.png)
 ---
 
+## Launch Template Configuration
+
+The EC2 instances are deployed using a **Launch Template**. You can customize the following parameters for your environment:
+
+- **architecture**: CPU architecture type  
+  Options:  
+  - `"x86_64"` (Intel/AMD)  
+  - `"arm64"` (AWS Graviton - ARM-based)
+
+- **storage**: EBS volume type  
+  Options:  
+  - `"gp2"`: General Purpose SSD (default)  
+  - `"gp3"`: Next-generation SSD (better baseline performance and tunable IOPS/throughput)  
+  - `"io1"` / `"io2"`: Provisioned IOPS SSD (for high-performance workloads)  
+  - `"sc1"` / `"st1"`: Throughput-optimized HDD (ideal for large-scale data processing)
+
+- **instance_type**: EC2 instance type  
+  Examples:  
+  - `"t2.micro"`: Free tier eligible  
+  - `"t3.micro"` / `"t3a.micro"`: Burstable general purpose  
+  - `"t4g.micro"`: ARM-based, cost-efficient (Graviton)
+
+---
+
 ##  Repository Structure
 
 ```
